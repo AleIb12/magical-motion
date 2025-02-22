@@ -1,11 +1,92 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { Image } from 'astro:assets';
+import bookCover from '../images/book-cover.svg';
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Lágrimas de Ángel">
+	<main class="container">
+		<nav class="nav-menu">
+			<a href="/biografia" class="nav-link">Ver Biografía</a>
+			<a href="#" class="nav-link download-link" id="downloadButton">Descargar PDF</a>
+		</nav>
+		<section class="book-showcase">
+			<div class="card main-card">
+				<div class="card-content">
+					<h1>Lágrimas de Ángel</h1>
+					<p class="release-date">Lanzamiento: 27 de febrero 2025</p>
+					<Image src={bookCover} alt="Portada del libro" class="book-cover" />
+					<p class="description">
+						Un viaje emotivo sobre el amor, la pérdida y el descubrimiento personal.
+					</p>
+					<div class="countdown-container">
+						<div class="countdown-box">
+							<span id="days">00</span>
+							<span class="label">Días</span>
+						</div>
+						<div class="countdown-box">
+							<span id="hours">00</span>
+							<span class="label">Horas</span>
+						</div>
+						<div class="countdown-box">
+							<span id="minutes">00</span>
+							<span class="label">Minutos</span>
+						</div>
+						<div class="countdown-box">
+							<span id="seconds">00</span>
+							<span class="label">Segundos</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="synopsis">
+			<div class="card">
+				<div class="card-content">
+					<h2>Sinopsis</h2>
+					<div class="synopsis-content">
+							<p>"Lágrimas de Ángel" narra la historia de Cass, un joven que deja su pequeño pueblo para iniciar una nueva vida en la ciudad y descubre el amor en los brazos de Samuel. Su relación se ve amenazada por la traición y el arrepentimiento, pero logran reconstruirla sobre la base de la honestidad y la confianza.</p>
+							<p>Juntos, enfrentan desafíos como la envidia de una antigua amiga, la formación de una familia y la pérdida de un ser querido. A través de los años, Cass aprende el valor del amor, el perdón, la amistad y la importancia de la familia.</p>
+							<p>Una historia conmovedora sobre la superación, la resiliencia y la búsqueda de la felicidad.</p>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
 </Layout>
+
+<script>
+function updateCountdown() {
+	const targetDate = new Date('2025-02-27T00:00:00').getTime();
+	const now = new Date().getTime();
+	const diff = targetDate - now;
+
+	const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+	const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+	const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+	const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+	const updateElement = (id: string, value: number) => {
+		const element = document.getElementById(id);
+		if (element) {
+			element.textContent = String(value).padStart(2, '0');
+		}
+	};
+
+	updateElement('days', days);
+	updateElement('hours', hours);
+	updateElement('minutes', minutes);
+	updateElement('seconds', seconds);
+}
+
+document.getElementById('downloadButton')?.addEventListener('click', (e) => {
+	e.preventDefault();
+	// Aquí puedes añadir la URL real de tu PDF
+	const pdfUrl = '/ruta-a-tu-libro.pdf';
+	window.open(pdfUrl, '_blank');
+});
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
+</script>
